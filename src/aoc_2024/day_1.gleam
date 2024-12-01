@@ -41,7 +41,7 @@ pub fn parse(input: String) -> TupleListInt {
   #(sorted_left_column, sorted_right_column)
 }
 
-pub fn pt_1(input: TupleListInt) {
+pub fn pt_1(input: TupleListInt) -> Int {
   let #(left_column, right_column) = input
 
   let zipped_lists = list.zip(left_column, right_column)
@@ -58,7 +58,7 @@ pub fn pt_1(input: TupleListInt) {
   differences_sum
 }
 
-pub fn pt_2(input: TupleListInt) {
+pub fn pt_2(input: TupleListInt) -> Int {
   let #(left_column, right_column) = input
 
   let similarity_score = left_column
