@@ -2,6 +2,7 @@ import gleam/result
 import gleam/list
 import gleam/string
 import gleam/int
+import gleam/dict
 
 pub type TupleListInt = #(List(Int), List(Int))
 
@@ -58,15 +59,33 @@ pub fn pt_1(input: TupleListInt) -> Int {
   differences_sum
 }
 
-pub fn pt_2(input: TupleListInt) -> Int {
+fn create_hash_map(numbers: List(Int)) {
+  list.fold(numbers, dict.new(), fn (current_dictionary, number) {
+    let has_key = dict.has_key(current_dictionary, number)
+
+    case has_key {
+      True -> {
+        let old_value = dict.get(current_dictionary, number)
+          |> result.unwrap(0)
+
+        dict.insert(current_dictionary, number, old_value + 1)
+      }
+      False -> {
+        dict.insert(current_dictionary, number, 1)
+      }
+    }
+  })
+}
+
+pub fn pt_2(input: TupleListInt) {
   let #(left_column, right_column) = input
+
+  let hash_map = create_hash_map(right_column)
 
   let similarity_score = left_column
     |> list.fold(0, fn (accumulator, left) {
-      let count_of_left_in_right_column = right_column
-        |> list.count(fn (right) {
-          left == right
-        })
+      let count_of_left_in_right_column = dict.get(hash_map, left)
+        |> result.unwrap(0)
         |> int.multiply(left)
 
       accumulator + count_of_left_in_right_column
