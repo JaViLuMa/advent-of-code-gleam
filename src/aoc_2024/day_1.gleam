@@ -9,7 +9,7 @@ fn split_pair(pair: String) -> #(Int, Int) {
   let parts = string.split(pair, on: "   ")
 
   case parts {
-    [left, right, .._rest] -> {
+    [left, right, ..] -> {
       let left_int = int.parse(left)
         |> result.unwrap(0)
       
