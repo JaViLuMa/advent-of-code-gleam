@@ -1,20 +1,23 @@
-import gleam/result
-import gleam/list
-import gleam/string
-import gleam/int
 import gleam/dict
+import gleam/int
+import gleam/list
+import gleam/result
+import gleam/string
 
-pub type TupleListInt = #(List(Int), List(Int))
+pub type TupleListInt =
+  #(List(Int), List(Int))
 
 fn split_pair(pair: String) -> #(Int, Int) {
   let parts = string.split(pair, on: "   ")
 
   case parts {
     [left, right, ..] -> {
-      let left_int = int.parse(left)
+      let left_int =
+        int.parse(left)
         |> result.unwrap(0)
-      
-      let right_int = int.parse(right)
+
+      let right_int =
+        int.parse(right)
         |> result.unwrap(0)
 
       #(left_int, right_int)
@@ -47,8 +50,9 @@ pub fn pt_1(input: TupleListInt) -> Int {
 
   let zipped_lists = list.zip(left_column, right_column)
 
-  let differences_sum = zipped_lists
-    |> list.fold(0, fn (accumulator, pair) {
+  let differences_sum =
+    zipped_lists
+    |> list.fold(0, fn(accumulator, pair) {
       let #(left, right) = pair
 
       let difference = int.absolute_value(left - right)
@@ -60,12 +64,13 @@ pub fn pt_1(input: TupleListInt) -> Int {
 }
 
 fn create_hash_map(numbers: List(Int)) {
-  list.fold(numbers, dict.new(), fn (current_dictionary, number) {
+  list.fold(numbers, dict.new(), fn(current_dictionary, number) {
     let has_key = dict.has_key(current_dictionary, number)
 
     case has_key {
       True -> {
-        let old_value = dict.get(current_dictionary, number)
+        let old_value =
+          dict.get(current_dictionary, number)
           |> result.unwrap(0)
 
         dict.insert(current_dictionary, number, old_value + 1)
@@ -82,9 +87,11 @@ pub fn pt_2(input: TupleListInt) {
 
   let hash_map = create_hash_map(right_column)
 
-  let similarity_score = left_column
-    |> list.fold(0, fn (accumulator, left) {
-      let count_of_left_in_right_column = dict.get(hash_map, left)
+  let similarity_score =
+    left_column
+    |> list.fold(0, fn(accumulator, left) {
+      let count_of_left_in_right_column =
+        dict.get(hash_map, left)
         |> result.unwrap(0)
         |> int.multiply(left)
 
