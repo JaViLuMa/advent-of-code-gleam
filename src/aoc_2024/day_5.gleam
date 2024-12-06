@@ -71,7 +71,8 @@ fn sort_pages_in_correct_order(update: List(Int), page: List(Int)) {
 
       case page_before_index > page_after_index {
         True -> {
-          let new_update = lu.swap_two_indexes(update, page_before_index, page_after_index)
+          let new_update =
+            lu.swap_two_indexes(update, page_before_index, page_after_index)
 
           new_update
         }

@@ -23,7 +23,7 @@ pub fn swap_two_indexes(l: List(a), i: Int, j: Int) {
   let assert Ok(j_value) = yielder.at(l_as_yielder, j)
 
   l
-  |> list.index_fold([], fn (current_list, item, index) {
+  |> list.index_fold([], fn(current_list, item, index) {
     case index == i {
       True -> current_list |> list.append([j_value])
       False -> {
