@@ -35,3 +35,17 @@ pub fn swap_two_indexes(l: List(a), i: Int, j: Int) {
     }
   })
 }
+
+pub fn enumerate(l: List(a)) {
+  list.index_map(l, fn(v, i) { #(i, v) })
+}
+
+pub fn enumerate_grid(grid_list: List(List(a))) {
+  let rows_with_index = enumerate(grid_list)
+
+  list.flat_map(rows_with_index, fn(row_with_index) {
+    let #(row_index, row) = row_with_index
+
+    list.index_map(row, fn(col, col_index) { #(row_index, col_index, col) })
+  })
+}
