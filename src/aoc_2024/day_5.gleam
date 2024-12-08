@@ -7,14 +7,14 @@ import gleam/string
 import gleam/yielder
 import utils/list as lu
 
-pub type Pages =
+type Pages =
   List(List(Int))
 
-pub type Updates =
+type Updates =
   List(List(Int))
 
-pub type PagesUpdates =
-  List(List(List(Int)))
+type PagesUpdates =
+  List(Updates)
 
 fn get_middle_element(update: List(Int)) {
   let middle_index =

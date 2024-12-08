@@ -5,7 +5,7 @@ import gleam/string
 import gleam/yielder
 import utils/iterator
 
-pub type Calibration =
+type Calibration =
   #(Int, List(String))
 
 fn get_calibration_operations_combinations(

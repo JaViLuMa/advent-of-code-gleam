@@ -3,7 +3,7 @@ import gleam/result
 import gleam/string
 import gleam/yielder
 
-pub type Crossword =
+type Crossword =
   yielder.Yielder(List(String))
 
 const directions = [

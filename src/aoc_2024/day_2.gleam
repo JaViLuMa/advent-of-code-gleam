@@ -3,7 +3,7 @@ import gleam/list
 import gleam/result
 import gleam/string
 
-pub type Reports =
+type Reports =
   List(List(Int))
 
 fn parse_report(line: String) -> List(Int) {

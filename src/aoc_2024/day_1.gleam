@@ -4,7 +4,7 @@ import gleam/list
 import gleam/result
 import gleam/string
 
-pub type TupleListInt =
+type TupleListInt =
   #(List(Int), List(Int))
 
 fn split_pair(pair: String) -> #(Int, Int) {

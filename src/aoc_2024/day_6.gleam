@@ -4,16 +4,16 @@ import gleam/set
 import gleam/string
 import utils/list as lu
 
-pub type IntPairs =
+type IntPairs =
   #(Int, Int)
 
-pub type PairOfPairs =
+type PairOfPairs =
   #(IntPairs, IntPairs)
 
-pub type MatrixDict =
+type MatrixDict =
   Dict(IntPairs, String)
 
-pub type MatrixDictGuard =
+type MatrixDictGuard =
   #(MatrixDict, IntPairs)
 
 fn traverse_the_grid(
@@ -93,7 +93,7 @@ pub fn parse(input: String) {
       |> string.split("")
     })
 
-  let enumerated_matrix = lu.enumerate_grid(matrix)
+  let enumerated_matrix = lu.enumerate_matrix(matrix)
 
   let matrix_dict =
     matrix
