@@ -38,6 +38,27 @@ pub fn swap_two_indexes(l: List(a), i: Int, j: Int) {
   })
 }
 
+pub fn swap_two_indexes_yielder(l: yielder.Yielder(a), i: Int, j: Int) {
+  let l_as_list = yielder.to_list(l)
+
+  let assert Ok(i_value) = yielder.at(l, i)
+  let assert Ok(j_value) = yielder.at(l, j)
+
+  l_as_list
+  |> list.index_fold([], fn(current_list, item, index) {
+    case index == i {
+      True -> current_list |> list.append([j_value])
+      False -> {
+        case index == j {
+          True -> current_list |> list.append([i_value])
+          False -> current_list |> list.append([item])
+        }
+      }
+    }
+  })
+  |> yielder.from_list
+}
+
 pub fn enumerate(l: List(a)) {
   list.index_map(l, fn(v, i) { #(i, v) })
 }
@@ -80,31 +101,65 @@ pub fn parse_matrix_as_ints(input: String) {
   matrix
 }
 
-pub fn slice(start: Int, end: Int, l: List(a), current_index: Int) {
+pub fn slice(start: Int, end: Int, l: List(a)) {
   case l {
     [] -> []
-    [_] -> l
+    [_] -> []
     _ -> {
-      let assert [head, ..tail] = l
-
-      case current_index >= end {
-        True -> []
-        False -> {
-          case current_index < start {
-            True -> slice(start, end, tail, current_index + 1)
-            False -> [head, ..slice(start, end, tail, current_index + 1)]
-          }
+      l
+      |> list.index_fold([], fn(accumulator, item, index) {
+        case index >= start && index < end {
+          True -> accumulator |> list.append([item])
+          False -> accumulator
         }
-      }
+      })
     }
   }
+}
+
+pub fn slice_yielder(start: Int, end: Int, l: yielder.Yielder(a)) {
+  let l_as_list = yielder.to_list(l)
+
+  let sliced_list = slice(start, end, l_as_list)
+
+  sliced_list |> yielder.from_list
 }
 
 pub fn collection_of_suffixes(l: List(a)) {
   let all_suffixes =
     l
-    |> list.index_map(fn(_, i) { slice(i, l |> list.length, l, 0) })
+    |> list.index_map(fn(_, i) { slice(i, l |> list.length, l) })
 
   all_suffixes
   |> list.filter(fn(suffix) { suffix |> list.length > 1 })
+}
+
+pub fn range_with_step(start: Int, end: Int, step: Int) {
+  case { step > 0 && start >= end } || { step < 0 && start <= end } {
+    True -> []
+    False -> {
+      [start] |> list.append(range_with_step(start + step, end, step))
+    }
+  }
+}
+
+pub fn range_with_step_yielder(start: Int, end: Int, step: Int) {
+  let range = range_with_step(start, end, step)
+
+  range |> yielder.from_list
+}
+
+@external(erlang, "lists", "droplast")
+pub fn pop(l: List(a)) -> List(a)
+
+pub fn pop_yielder(l: yielder.Yielder(a)) {
+  let l_as_list = yielder.to_list(l)
+
+  let popped_list = pop(l_as_list)
+
+  popped_list |> yielder.from_list
+}
+
+pub fn at(l: List(a), index: Int) {
+  l |> list.drop(index) |> list.first
 }
