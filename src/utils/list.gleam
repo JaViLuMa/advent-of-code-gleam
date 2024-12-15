@@ -1,4 +1,5 @@
 import gleam/int
+import gleam/io
 import gleam/list
 import gleam/result
 import gleam/string
@@ -162,4 +163,27 @@ pub fn pop_yielder(l: yielder.Yielder(a)) {
 
 pub fn at(l: List(a), index: Int) {
   l |> list.drop(index) |> list.first
+}
+
+pub fn construct_matrix(width: Int, height: Int, character: String) {
+  let width_range = list.range(1, width)
+  let height_range = list.range(1, height)
+
+  height_range
+  |> list.map(fn(_) {
+    width_range
+    |> list.map(fn(_) { character })
+  })
+}
+
+pub fn matrix_print(matrix: List(List(String))) {
+  case matrix |> list.length == 0 {
+    True -> Nil
+    False -> {
+      matrix
+      |> list.each(fn(row) { io.println(row |> string.join(" ")) })
+
+      io.println("")
+    }
+  }
 }
