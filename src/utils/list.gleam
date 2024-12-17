@@ -19,11 +19,13 @@ pub fn find_index(l: List(a), value: a) {
   })
 }
 
-pub fn swap_two_indexes(l: List(a), i: Int, j: Int) {
-  let l_as_yielder = yielder.from_list(l)
+pub fn at(l: List(a), index: Int) {
+  l |> list.drop(index) |> list.first
+}
 
-  let assert Ok(i_value) = yielder.at(l_as_yielder, i)
-  let assert Ok(j_value) = yielder.at(l_as_yielder, j)
+pub fn swap_two_indexes(l: List(a), i: Int, j: Int) {
+  let assert Ok(i_value) = at(l, i)
+  let assert Ok(j_value) = at(l, j)
 
   l
   |> list.index_fold([], fn(current_list, item, index) {
@@ -79,7 +81,7 @@ pub fn parse_matrix(input: String) {
 
   let matrix =
     rows
-    |> list.map(fn(row) { row |> string.split("") })
+    |> list.map(fn(row) { row |> string.to_graphemes })
 
   matrix
 }
@@ -161,10 +163,6 @@ pub fn pop_yielder(l: yielder.Yielder(a)) {
   popped_list |> yielder.from_list
 }
 
-pub fn at(l: List(a), index: Int) {
-  l |> list.drop(index) |> list.first
-}
-
 pub fn construct_matrix(width: Int, height: Int, character: String) {
   let width_range = list.range(1, width)
   let height_range = list.range(1, height)
@@ -186,4 +184,15 @@ pub fn matrix_print(matrix: List(List(String))) {
       io.println("")
     }
   }
+}
+
+pub fn rotate_matrix_clockwise_90(matrix: List(List(a))) {
+  let transposed_matrix = matrix |> list.transpose
+
+  transposed_matrix
+  |> list.map(fn(row) { row |> list.reverse })
+}
+
+pub fn rotate_matrix_counter_clockwise_90(matrix: List(List(a))) {
+  matrix |> list.transpose |> list.reverse
 }
