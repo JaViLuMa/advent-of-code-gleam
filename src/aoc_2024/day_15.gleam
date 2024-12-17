@@ -13,7 +13,6 @@ type WarehouseMapAsMatrix =
 type WarehouseMap =
   dict.Dict(Position, String)
 
-// type WarehouseMapWithRobotPosition = #(WarehouseMap, Position)
 type Directions =
   List(String)
 
